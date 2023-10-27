@@ -22,12 +22,14 @@ public class PostingDTO {
     private String content;
     //좋아요 수
     private long liked;
+    private List<PostingImages> images = new ArrayList<>();
 
     public Posting toEntity(){
         return Posting.builder()
                 .title(title)
                 .content(content)
                 .liked(liked)
+                .images(images)
                 .build();
     }
 }

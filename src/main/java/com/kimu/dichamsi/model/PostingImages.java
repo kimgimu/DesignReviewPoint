@@ -1,16 +1,15 @@
 package com.kimu.dichamsi.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Getter
+@Setter
+@ToString(exclude = "posting")
 @Builder
 public class PostingImages {
 
@@ -19,12 +18,14 @@ public class PostingImages {
     @Column(name="POSTING_IMAGES_ID")
     private Long id;
 
-    //사용자 지정 파일 이름
-    private String uploadFileName;
-    private String storedFileName;
-    private String fullPath;
+//    //사용자 지정 파일 이름
+//    private String uploadFileName;
+//    //서버 지정 파일 이름(UUID 사용)
+//    private String storedFileName;
+    //이미지 경로 S3
+    private String images;
     @ManyToOne
-    @JoinColumn(name="POSTING_ID")
+    @JoinColumn(name="POSTING_ID", referencedColumnName = "POSTING_ID")
     private Posting posting;
 
 }

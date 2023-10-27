@@ -33,6 +33,7 @@ public class Posting {
                 .title(title)
                 .content(content)
                 .liked(liked)
+                .images(images)
                 .build();
     }
 
