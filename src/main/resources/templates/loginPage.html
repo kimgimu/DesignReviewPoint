@@ -1,10 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
-
+<form th:action="@{/user/login}" method="post">
+    <input type="text" placeholder="이메일" name="userEmail">
+    <input type="password" placeholder="비밀번호" name="password">
+    <input type="submit" value="로그인">
+</form>
 </body>
 </html>

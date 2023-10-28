@@ -1,11 +1,20 @@
 package com.kimu.dichamsi.controller;
 
+import com.kimu.dichamsi.model.MemberDTO;
+import com.kimu.dichamsi.service.MemberService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
+@RequestMapping("/user")
 @Controller
-public class UserController {
+public class MemberController {
+
+    private final MemberService memberService;
+    public MemberController(MemberService memberService) {
+        this.memberService = memberService;
+    }
 
     //메인페이지
     @GetMapping("/")
@@ -21,7 +30,9 @@ public class UserController {
 
     //로그인메서드
     @PostMapping("/login")
-    public String loginCheck(){
+    public String loginCheck(MemberDTO memberDTO){
+        String token = memberService.login(memberDTO);
+        System.out.println(token);
         return "redirect:/";
     }
 
@@ -33,8 +44,9 @@ public class UserController {
 
     //회원가입메서드
     @PostMapping("/join")
-    public String joinCheck(){
-        return "redirect:/login";
+    public String joinCheck(MemberDTO memberDTO){
+        memberService.join(memberDTO);
+        return "redirect:/user/login";
     }
 
     //마이페이지

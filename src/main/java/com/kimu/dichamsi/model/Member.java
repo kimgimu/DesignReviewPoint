@@ -8,35 +8,31 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.time.LocalDate;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 @Builder
-public class User {
+public class Member {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; // ID를 자동 생성하도록 설정합니다.
 
     private String userEmail;
-    private String userPassword;
-    private String userNickname;
+    private String password;
     private String username;
-    private String userPhoneNumber;
-    private String userAddress;
-    private LocalDate userBirthday;
+    private String nickname;
+    private String telephone;
 
-    public UserDTO toDTO(){
-        return UserDTO.builder()
+    public MemberDTO toDTO(){
+        return MemberDTO.builder()
                 .userEmail(userEmail)
-                .userPassword(userPassword)
-                .userNickname(userNickname)
+                .password(password)
                 .username(username)
-                .userAddress(userAddress)
-                .userBirthday(userBirthday)
+                .nickname(nickname)
+                .telephone(telephone)
                 .build();
     }
 
