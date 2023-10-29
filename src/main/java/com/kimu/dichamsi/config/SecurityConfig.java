@@ -1,49 +1,41 @@
 package com.kimu.dichamsi.config;
 
-import com.kimu.dichamsi.jwt.JwtFilter;
 import com.kimu.dichamsi.service.MemberService;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration
-public class SecurityConfig {
+@EnableWebSecurity
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final MemberService memberService;
+    @Autowired
+    private MemberService memberService;
+    @Autowired
+    private BCryptPasswordEncoder encoder;
 
-    @Value("${jwt.token.secret}")
-    private String key;
-
-    public SecurityConfig(MemberService memberService) {
-        this.memberService = memberService;
-    }
-
-    @Bean
-    public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        return httpSecurity
-                .httpBasic().disable()
-                .csrf().disable()
-                .cors().and()
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
                 .authorizeRequests()
-                    //허용이 되는 엔드 포인트
-                    .antMatchers("/user/join","/user/login").permitAll()
-                    //나머지는 다 접근불가
+                    .antMatchers("/user/join", "/user/login").permitAll()
                     .anyRequest().authenticated()
                 .and()
-                //허용이 안되는 url로 이동할시에 로그인페이지로 이동
-                .formLogin()
+                    .formLogin()
                     .loginPage("/user/login")
-                    //성공을 한다면 메인페이지로
-                    .defaultSuccessUrl("/")
+                    .defaultSuccessUrl("/loginSuccess", true)
+                    .failureUrl("/loginFail")
+                    .permitAll()
                 .and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .addFilterBefore(new JwtFilter(memberService, key), UsernamePasswordAuthenticationFilter.class)
-                .build();
+                    .logout()
+                    .logoutUrl("/user/logout")
+                    .permitAll();
+        http.csrf().disable();
+        http.headers().frameOptions().disable();
     }
+
 }

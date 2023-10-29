@@ -2,22 +2,30 @@ package com.kimu.dichamsi.service;
 
 import com.kimu.dichamsi.execption.AppException;
 import com.kimu.dichamsi.execption.ErrorCode;
+import com.kimu.dichamsi.model.CustomUserDetails;
 import com.kimu.dichamsi.model.Member;
 import com.kimu.dichamsi.model.MemberDTO;
 import com.kimu.dichamsi.repository.MemberReository;
-import com.kimu.dichamsi.jwt.JwtTokenUtil;
-import org.springframework.beans.factory.annotation.Value;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Optional;
+
 @Service
-public class MemberService {
+@Slf4j
+public class MemberService implements UserDetailsService {
 
     private final MemberReository memberReository;
     private final BCryptPasswordEncoder encoder;
-    @Value("${jwt.token.secret}")
-    private String key;
-    private Long expireTimeMs = 1000 * 60 * 60L;
     public MemberService(MemberReository memberReository, BCryptPasswordEncoder encoder) {
         this.memberReository = memberReository;
         this.encoder = encoder;
@@ -34,21 +42,19 @@ public class MemberService {
         return memberReository.save(memberDTO.toEntity(encoder)).toDTO();
     }
 
-    //로그인
-    public String login(MemberDTO memberDTO){
-        System.out.println("로그인 서비스단");
-        String memberEmail = memberDTO.getUserEmail();
-        //userEmail 없음
-        Member selectdMember = memberReository.findByUserEmail(memberEmail)
-                .orElseThrow(() -> new AppException(ErrorCode.USEREMAIL_NOT_FOUND,memberEmail+"이 없습니다."));
-        //password 틀림 (매치 순서 중요! DTO , Entity)
-        if(!encoder.matches(memberDTO.getPassword(),selectdMember.getPassword())){
-            throw new AppException(ErrorCode.INVALID_PASSWORD,"패스워드를 잘못 입력 했습니다");
-        }
-        //성공시 토큰 발행
-        String token = JwtTokenUtil.createToken(selectdMember.getUserEmail(),key,expireTimeMs);
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        return token;
+        Optional<Member> memberEntity = memberReository.findByUserEmail(username);
+
+        if(memberEntity.isPresent()) {
+            return new CustomUserDetails(memberEntity.get());
+        }else {
+            throw new UsernameNotFoundException("유저 정보를 찾을 수 없습니다.");
+        }
     }
 
 }
+
+
+
