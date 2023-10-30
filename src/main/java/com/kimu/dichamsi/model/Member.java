@@ -18,7 +18,7 @@ public class Member {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id; // ID를 자동 생성하도록 설정합니다.
+    private Long id;
 
     private String userEmail;
     private String password;

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script type="text/javascript" th:src="@{https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js}"></script>
+<table>
+    <tr>
+        <td>
+            <a th:text="${posting.title}"></a>
+        </td>
+    <tr>
+    <tr>
+        <td th:text=" ${posting.content}"></td>
+    <tr>
+    <tr th:each="image : ${posting.images}">
+        <td>
+            <img th:src="${image.images}" alt="Image">
+        </td>
+    </tr>
+    <tr>
+        <td th:text="${posting.liked}"></td>
+    </tr>
+
+    <tr>
+        <td>댓글작성</td>
+        <td>
+            <input type="text" placeholder="댓글작성" id="content">
+            <button id="contentButton">전송</button>
+        </td>
+    </tr>
+
+    <tr th:each="comment : ${comments}">
+        <td th:text="${comment.memberName}"></td>
+        <td th:text="${comment.content}"></td>
+    </tr>
+</table>
+
+<script type="text/javascript">
+    const btn = document.querySelector('contentButton');
+    const userEmail = "[[${userEmail}]]";
+    btn.addEventListener('click', () => {
+
+        $.ajax({
+            type : 'post',
+            url : '/posting/comment',
+            dataType : 'json',
+            data : { 'userEmail' : userEmail },
+            success : function (comment) {
+                location.reload();
+            },
+            error : function (error){
+                console.log(error)
+            }
+        })
+    })
+</script>
+</body>
+</html>

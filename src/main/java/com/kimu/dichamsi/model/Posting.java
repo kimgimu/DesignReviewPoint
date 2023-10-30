@@ -28,12 +28,17 @@ public class Posting {
     @OneToMany(mappedBy = "posting", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PostingImages> images = new ArrayList<>();
 
+    @OneToMany(mappedBy = "posting", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comments = new ArrayList<>();
+
     public PostingDTO toDTO(){
         return PostingDTO.builder()
+                .id(id)
                 .title(title)
                 .content(content)
                 .liked(liked)
                 .images(images)
+                .comments(comments)
                 .build();
     }
 

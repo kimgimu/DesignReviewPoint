@@ -7,20 +7,21 @@
 <body>
 <table>
 
-<tr th:if="${postings.isEmpty()}">
+    <tr th:if="${postings.isEmpty()}">
         <td colspan="5">조회되는 데이터가 없습니다.</td>
-</tr>
+    </tr>
 
-<tr th:each="posting : ${postings}">
-    <td>
-        <a th:text = "${posting.title}"></a>
-    </td>
-    <td th:text=" ${posting.content}"></td>
-    <td>
-            <img th:src="${posting.images.get(0).images}" alt="Image">
-    </td>
-    <td th:text = "${posting.liked}"></td>
-</tr>
+    <tr th:each="posting : ${postings}">
+        <td>
+            <a th:href="@{/posting/board/view/{id}(id = ${posting.id})}">
+                <img th:src="${posting.images.get(0).images}" alt="Image">
+            </a>
+        </td>
+        <td th:text="${posting.title}">
+        </td>
+        <td th:text="${posting.liked}"></td>
+    </tr>
+
 </table>
 
 <form method="get" action="/posting/board/write">

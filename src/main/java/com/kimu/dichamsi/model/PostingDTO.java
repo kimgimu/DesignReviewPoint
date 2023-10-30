@@ -15,7 +15,7 @@ import java.util.List;
 @Data
 @Builder
 public class PostingDTO {
-
+    private Long id;
     //제목
     private String title;
     //상세 내용
@@ -23,6 +23,7 @@ public class PostingDTO {
     //좋아요 수
     private long liked;
     private List<PostingImages> images = new ArrayList<>();
+    private List<Comment> comments = new ArrayList<>();
 
     public Posting toEntity(){
         return Posting.builder()
@@ -30,6 +31,7 @@ public class PostingDTO {
                 .content(content)
                 .liked(liked)
                 .images(images)
+                .comments(comments)
                 .build();
     }
 }

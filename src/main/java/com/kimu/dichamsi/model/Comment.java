@@ -17,5 +17,22 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="COMENT_ID")
     private Long id;
+    private String content;
+
+    @ManyToOne
+    @JoinColumn(name = "MEMBER_ID")
+    private Member member;
+
+    @ManyToOne
+    @JoinColumn(name = "POSTING_ID")
+    private Posting posting;
+
+    public CommentDTO toDTO(){
+        return CommentDTO.builder()
+                .content(content)
+                .memberName(member.getUsername())
+                .postingId(posting.getId())
+                .build();
+    }
 
 }

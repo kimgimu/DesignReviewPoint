@@ -25,7 +25,6 @@ public class MainController {
     public String loginSuccess(HttpSession session) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
-        System.out.println(username);
         session.setAttribute("userEmail", username);
         return "redirect:/mainPage";
     }
