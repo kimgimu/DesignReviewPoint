@@ -8,4 +8,5 @@ import java.util.Optional;
 public interface MemberReository extends JpaRepository<Member,Long> {
     //이메일 중복체크
     Optional<Member> findByUserEmail(String userEmail);
+    Optional<Member> findByNickname(String nickname);
 }

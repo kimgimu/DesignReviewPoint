@@ -12,16 +12,18 @@ import javax.persistence.*;
 @Builder
 public class CommentDTO {
 
-      private String content;
-      private String memberName;
-      private Long postingId;
+    private Long commentId;
+    private String content;
+    private String memberName;
+    private Long postingId;
 
-      public Comment toEntity(){
-          return Comment.builder()
-                  .content(content)
-                  .member(Member.builder().username(memberName).build())
-                  .posting(Posting.builder().id(postingId).build())
-                  .build();
-      }
-
+    public Comment toEntity() {
+        return Comment.builder()
+                .id(commentId)
+                .content(content)
+                .member(Member.builder().nickname(memberName).build())
+                .posting(Posting.builder().id(postingId).build())
+                .build();
     }
+
+}

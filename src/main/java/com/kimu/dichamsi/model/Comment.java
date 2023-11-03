@@ -29,8 +29,9 @@ public class Comment {
 
     public CommentDTO toDTO(){
         return CommentDTO.builder()
+                .commentId(id)
                 .content(content)
-                .memberName(member.getUsername())
+                .memberName(member.getNickname())
                 .postingId(posting.getId())
                 .build();
     }

@@ -6,6 +6,7 @@ import com.kimu.dichamsi.model.CustomUserDetails;
 import com.kimu.dichamsi.model.PostingDTO;
 import com.kimu.dichamsi.service.CommentService;
 import com.kimu.dichamsi.service.PostingService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -51,19 +52,45 @@ public class PostingController {
     @GetMapping("/board/view/{id}")
     public String postingViewPage(@PathVariable("id") Long id,
                                   Model model){
+        //시큐리티에서 닉네임 뽑아오기
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        model.addAttribute("userEmail",authentication.getName());
+        CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
+        String nickname = customUserDetails.getMember().getNickname();
+
+        model.addAttribute("nickname",nickname);
+
         PostingDTO postingDTO = postingService.showView(id);
         List<CommentDTO> comments = commentService.showComment(id);
+
         model.addAttribute("comments",comments);
         model.addAttribute("posting",postingDTO);
         return "postingView";
     }
 
-//    @PostMapping("/comment")
-//    public @ResponseBody ResponseBody commentWrite(String userEmail){
-//
-//        return ;
-//    }
+    @PostMapping("/comment/write")
+    @ResponseBody
+    public ResponseEntity<?> commentWrite(CommentDTO commentDTO){
+        boolean isSaved = commentService.commentWrite(commentDTO);
+        if (isSaved) {
+            return ResponseEntity.ok(commentDTO);
+        } else {
+            return ResponseEntity.badRequest().body("댓글 저장 실패");
+        }
+    }
+
+    @PostMapping("/comment/delete")
+    @ResponseBody
+    public ResponseEntity<?> commentDelete(CommentDTO commentDTO){
+        boolean isDeleted = commentService.commentDelete(commentDTO);
+
+        System.out.println(isDeleted);
+
+        if (isDeleted) {
+            return ResponseEntity.ok("댓글 삭제 성공");
+        } else {
+            return ResponseEntity.badRequest().body("댓글 삭제 실패");
+        }
+    }
+
 
 }
