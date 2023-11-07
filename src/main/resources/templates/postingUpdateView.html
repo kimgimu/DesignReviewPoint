@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script type="text/javascript" th:src="@{https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js}"></script>
+<div>
+    <form th:action="@{'/posting/board/update/'+${posting.id}}" method="post" enctype="multipart/form-data">
+        <input type="text" name="title" placeholder="제목">
+        <textarea name="content" cols="30" rows="10" placeholder="내용"></textarea>
+        <input type="hidden" value="0" name="liked">
+        <input type="file" name="file" multiple="multiple">
+        <input type="submit" value="업로드" id="submit">
+    </form>
+</div>
+div
+<ul th:each="image : ${posting.images}">
+    <li class="image">
+        <img th:src="${image.images}" alt="Image" >
+        <input type="hidden" th:value="${image.id}" class="imageId">
+        <button class="deletes">X</button>
+    </li>
+</ul>
+
+<script type="text/javascript">
+    const deleteButtons = document.querySelectorAll(".deletes");
+
+    deleteButtons.forEach(button => {
+        button.addEventListener('click',() => {
+            const imageId = button.parentElement.querySelector(".imageId").value;
+            const image = button.parentElement.parentElement.querySelector(".image");
+            console.log(image);
+            $.ajax({
+                type: 'post',
+                url: '/posting/image/delete/image/' + imageId,
+                success: function (msg) {
+                    console.log(imageId+"삭제완료");
+                    image.remove();
+                },
+                error: function (error) {
+                    console.log(error)
+                }
+            })
+        })
+    })
+
+</script>
+</body>
+</html>

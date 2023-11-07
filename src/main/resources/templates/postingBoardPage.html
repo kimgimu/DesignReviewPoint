@@ -14,7 +14,7 @@
     <tr th:each="posting : ${postings}">
         <td>
             <a th:href="@{/posting/board/view/{id}(id = ${posting.id})}">
-                <img th:src="${posting.images.get(0).images}" alt="Image">
+                <img th:if="${not #lists.isEmpty(posting.images)}" th:src="${posting.images[0].images}" alt="Image">
             </a>
         </td>
         <td th:text="${posting.title}">

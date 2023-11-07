@@ -16,6 +16,8 @@ import java.util.List;
 @Builder
 public class PostingDTO {
     private Long id;
+    //작성자(닉네임)
+    private String nickname;
     //제목
     private String title;
     //상세 내용
@@ -27,6 +29,7 @@ public class PostingDTO {
 
     public Posting toEntity(){
         return Posting.builder()
+                .id(id)
                 .title(title)
                 .content(content)
                 .liked(liked)

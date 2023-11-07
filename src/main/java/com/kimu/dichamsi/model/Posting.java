@@ -21,6 +21,9 @@ public class Posting {
     @Column(name="POSTING_ID")
     private Long id;
 
+    @ManyToOne
+    @JoinColumn(name="MEMBER_ID")
+    private Member member;
     private String title;
     private String content;
     private Long liked;
@@ -34,6 +37,7 @@ public class Posting {
     public PostingDTO toDTO(){
         return PostingDTO.builder()
                 .id(id)
+                .nickname(member.getNickname())
                 .title(title)
                 .content(content)
                 .liked(liked)

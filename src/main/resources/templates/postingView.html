@@ -8,10 +8,11 @@
 <script type="text/javascript" th:src="@{https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js}"></script>
 <table border="1" id="posting">
     <tr>
-        <td>
-            <a th:text="${posting.title}"></a>
-        </td>
+        <td th:text="${posting.title}"></td>
     <tr>
+    <tr>
+        <td th:text="${posting.nickname}"></td>
+    </tr>
     <tr>
         <td th:text=" ${posting.content}"></td>
     <tr>
@@ -22,6 +23,14 @@
     </tr>
     <tr>
         <td th:text="${posting.liked}"></td>
+    </tr>
+    <tr>
+        <td th:if="${posting.nickname==nickname}">
+            <button id="posting_update" th:onclick="|location.href='@{/posting/board/update/{id}(id = ${posting.id})}'|">수정</button>
+        </td>
+        <td th:if="${posting.nickname==nickname}">
+            <button id="posting_delete" onclick="">삭제</button>
+        </td>
     </tr>
 </table>
 
@@ -37,23 +46,41 @@
     <tr th:each="comment : ${comments}" id="commentList" th:data-comment-id="${comment.commentId}">
         <td th:text="${comment.memberName}"></td>
         <td th:text="${comment.content}"></td>
-        <td>
+        <td th:if="${nickname == comment.memberName}">
             <button class="update">수정</button>
         </td>
-        <td>
+        <td th:if="${nickname == comment.memberName}">
             <button class="delete">삭제</button>
         </td>
     </tr>
 </table>
 
 <script type="text/javascript">
-    const btn = document.querySelector('#contentButton');
-    const updateBtn = document.querySelector('#update');
-    const deleteBtn = document.querySelector('#delete');
+    const deleteBtn = document.querySelector('#posting_delete');
+    const id = '[[${posting.id}]]';
+    console.log(id+"게시글번호")
+
+    deleteBtn.addEventListener('click',() => {
+
+        $.ajax({
+            type : 'post',
+            url : '/posting/board/view/delete',
+            data : {id:id},
+            success: function () {
+                console.log("삭제 성공");
+                window.location.href="/posting/board";
+            },
+            error: function (error) {
+                console.log(error)
+            }
+        })
+    })
+
+    const commentBtn = document.querySelector('#contentButton');
 
     console.log("[[${nickname}]]");
 
-    btn.addEventListener('click', () => {
+    commentBtn.addEventListener('click', () => {
 
         const content = document.querySelector('#content').value;
         const memberName = "[[${nickname}]]";
@@ -71,19 +98,7 @@
             dataType: 'json',
             data: commentDTO,
             success: function (newComment) {
-
-                const table = document.querySelector('#comment');
-
-                const comment = table.insertRow();
-
-                const memberName = comment.insertCell(0);
-                const content = comment.insertCell(1);
-
-                memberName.innerText = newComment.memberName;
-                content.innerText = newComment.content;
-
-                // 인풋 필드 비우기
-                document.querySelector('#content').value = '';
+                location.reload();
             },
             error: function (error) {
                 console.log(error)
