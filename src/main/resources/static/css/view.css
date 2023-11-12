@@ -1,0 +1,136 @@
+
+
+.modal-view {
+    background: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    width: 150vh;
+    z-index: 999;
+    position: absolute;
+    left: 13%;
+    color: #07051a;
+}
+
+.posting-title {
+    margin: 50px;
+}
+
+.posting-profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.posting-profile .heart-button {
+    background: url("https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Eo_circle_red_heart.svg/1024px-Eo_circle_red_heart.svg.png?20200417173448") no-repeat;
+    background-size: cover;
+    width: 50px;
+    height: 50px;
+}
+
+.member-img {
+    height: 80px;
+    width: 80px;
+    border-radius: 100%;
+    object-fit: cover;
+}
+
+.posting-content {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    margin: 100px 0 150px;
+}
+
+.member-nickname {
+    font-weight: bold;
+    margin: 20px 0 10px;
+    font-size: 24px;
+}
+
+.likeform {
+    display: flex;
+    flex-direction: column;
+    margin: 30px;
+}
+
+.posting-comment {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #E5E5E5;
+    padding: 50px;
+    width: 90%;
+    background-color: #F9F9F9;
+}
+
+.commnet-1 {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #E5E5E5;
+    padding: 20px;
+    width: 100%;
+    background-color: #FFFFFF;
+}
+
+.comment-1-1 {
+    display: flex;
+    gap: 20px;
+}
+
+.comment-1-2 {
+    text-align: right;
+}
+
+.comment-1-2 button{
+    margin-top: 20px;
+    font-size: 16px;
+    background-color: #fff;
+    border: 1px solid #E5E5E5;
+    padding: 10px;
+    border-radius: 20px;
+}
+
+#comment-area {
+    width: 100%;
+    height: 100px;
+    border: 1px solid #C5C5C5;
+    font-size: 16px;
+    padding: 20px;
+    resize: none;
+}
+
+.comment-2 {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #E5E5E5;
+    padding: 20px;
+    width: 100%;
+    background-color: #fff;
+}
+
+.comment-2-1 {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.comment-oneform {
+    display: flex;
+    gap: 20px;
+
+}
+
+.comment-info p:nth-child(1){
+    font-weight: bold;
+}
+
+.comment-info p:nth-child(2){
+    font-size: 12px;
+}
+
+.hidden {
+    display: none;
+}

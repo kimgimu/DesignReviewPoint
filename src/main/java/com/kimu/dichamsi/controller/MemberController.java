@@ -38,16 +38,6 @@ public class MemberController {
         return "redirect:/user/login";
     }
 
-    //마이페이지
-    @GetMapping("/mypage")
-    public String mypage() {
-        return "myPage";
-    }
 
-    //설정페이지
-    @GetMapping("/setting")
-    public String setting() {
-        return "settingPage";
-    }
 
 }

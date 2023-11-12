@@ -2,17 +2,20 @@ package com.kimu.dichamsi.service;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.kimu.dichamsi.model.Comment;
-import com.kimu.dichamsi.model.Posting;
-import com.kimu.dichamsi.model.PostingDTO;
-import com.kimu.dichamsi.model.PostingImages;
+import com.kimu.dichamsi.model.*;
 import com.kimu.dichamsi.repository.MemberReository;
+import com.kimu.dichamsi.repository.PostRepository;
 import com.kimu.dichamsi.repository.PostingImagesRepository;
 import com.kimu.dichamsi.repository.PostingRepositoy;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartRequest;
 
 import java.io.IOException;
 import java.util.*;
@@ -26,17 +29,17 @@ public class PostingService {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
-    @Value("${spring.servlet.multipart.location}")
-    private String fileUploadLocation;
     private final PostingRepositoy postingRepositoy;
     private final MemberReository memberReository;
     private final PostingImagesRepository postingImagesRepository;
+    private final PostRepository postRepository;
 
-    public PostingService(AmazonS3 amazonS3, PostingRepositoy postingRepositoy, MemberReository memberReository, PostingImagesRepository postingImagesRepository) {
+    public PostingService(AmazonS3 amazonS3, PostingRepositoy postingRepositoy, MemberReository memberReository, PostingImagesRepository postingImagesRepository, PostRepository postRepository) {
         this.amazonS3 = amazonS3;
         this.postingRepositoy = postingRepositoy;
         this.memberReository = memberReository;
         this.postingImagesRepository = postingImagesRepository;
+        this.postRepository = postRepository;
     }
 
     public void savePosting(PostingDTO postingDTO,
@@ -127,6 +130,39 @@ public class PostingService {
         postingRepositoy.deleteById(id);
     }
 
+    public String imageUpload(MultipartRequest request) throws IOException {
+        //인자에서 파일 뽑아내는 과정
+        MultipartFile file = request.getFile("upload");
 
+        //뽑아낸 이미지에서 이름 및 확장자를 추출
+        String fileName = file.getOriginalFilename();
+        String ext = fileName.substring(fileName.indexOf(".")); //확장자
+
+        //고유한 이름으로 변경
+        String uuidFileName = UUID.randomUUID() + fileName;
+
+        //메타데이터에 정보저장
+        ObjectMetadata metadata = new ObjectMetadata();
+        metadata.setContentLength(file.getSize());
+        metadata.setContentType(ext);
+
+        amazonS3.putObject(bucket,uuidFileName,file.getInputStream(),metadata);
+
+        return amazonS3.getUrl(bucket,uuidFileName).toString();
+    }
+
+    public Post writePost(PostDTO postDTO){
+       Optional<Member> member = memberReository.findByNickname(postDTO.getNickname());
+       return postRepository.save(postDTO.toEntity(member.get()));
+    }
+
+    public List<Post> viewAllPost(int page, int size){
+        Pageable pageable = PageRequest.of(page-1,size);
+        return postRepository.findAllPostWithImageUrls(pageable);
+    }
+
+    public Optional<Post> viewPost(Long id){
+        return postRepository.findById(id);
+    }
 
 }

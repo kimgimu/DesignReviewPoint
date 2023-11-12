@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.ckeditor.com/ckeditor5/40.0.0/classic/ckeditor.js"></script>
+</head>
+<body>
+
+<form th:action="@{/posting/write}" method="post">
+    <input type="text" name="title" placeholder="제목">
+    <textarea name="content" cols="30" rows="10" placeholder="내용" id="editor"></textarea>
+    <input type="hidden" value="0" name="liked">
+    <input type="submit" value="업로드">
+</form>
+
+<script>
+    ClassicEditor
+        .create( document.querySelector( '#editor' ) ,
+            {
+                ckfinder : {
+                    uploadUrl : '/posting/image/upload',
+                    withCredentials : true
+                }
+            }
+        )
+        .then( editor => {
+            console.log( editor );
+        } )
+        .catch( error => {
+            console.error( error );
+        } );
+</script>
+</body>
+</html>

@@ -25,6 +25,7 @@ public class Member {
     private String username;
     private String nickname;
     private String telephone;
+    private String info;
 
     public MemberDTO toDTO(){
         return MemberDTO.builder()

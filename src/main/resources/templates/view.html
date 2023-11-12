@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/css/view.css}"/>
+    <script th:src="@{/js/view.js}" type="text/javascript"></script>
+</head>
+<body>
+
+<div class="modal-view" >
+
+    <h2 class="posting-title" th:text="${post.get().title}">
+    </h2>
+
+    <div class="posting-content" th:utext="${post.get().content}">
+    </div>
+
+    <div class="posting-profile">
+
+        <img class="member-img"
+             src="https://image.dongascience.com/Photo/2020/03/5bddba7b6574b95d37b6079c199d7101.jpg" alt="">
+
+        <span class="member-nickname" th:text="${post.get().member.nickname}"></span>
+<!--        <span class="member-info" th:text="${post.get().member.info}"></span>-->
+
+        <div class="likeform">
+            <button class="heart-button">
+            </button>
+            <span>좋아요</span>
+        </div>
+    </div>
+
+    <div class="posting-comment">
+
+        <div class="commnet-1">
+
+            <div class="comment-1-1">
+                <img class="member-img"
+                     src="https://image.dongascience.com/Photo/2020/03/5bddba7b6574b95d37b6079c199d7101.jpg" alt="">
+                <textarea id="comment-area" cols="30" rows="10"></textarea>
+            </div>
+
+            <div class="comment-1-2">
+                <button>댓글작성</button>
+            </div>
+        </div>
+
+        <div class="comment-2">
+            <div class="comment-2-1">
+                <div class="comment-oneform">
+                    <img class="member-img"
+                         src="https://image.dongascience.com/Photo/2020/03/5bddba7b6574b95d37b6079c199d7101.jpg" alt="">
+                    <div class="comment-info">
+                        <p>김을용</p>
+                        <p>2023.09.10</p>
+                        <p>굿짭</p>
+                    </div>
+                </div>
+                <div class="comment-oneform">
+                    <img class="member-img"
+                         src="https://image.dongascience.com/Photo/2020/03/5bddba7b6574b95d37b6079c199d7101.jpg" alt="">
+                    <div class="comment-info">
+                        <p>김을용</p>
+                        <p>2023.09.10</p>
+                        <p>굿짭</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+</body>
+</html>

@@ -26,7 +26,7 @@ public class MainController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         session.setAttribute("userEmail", username);
-        return "redirect:/mainPage";
+        return "redirect:/posting/main";
     }
 
     @RequestMapping(value = "/loginFail", method = RequestMethod.GET)
