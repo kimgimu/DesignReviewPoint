@@ -97,4 +97,9 @@ public class PostingService {
         log.info("서비스단 확인5={}",post1);
         return post1;
     }
+
+    public Optional<Post> deletePost(Long id){
+        postRepository.deleteById(id);
+        return  postRepository.findById(id);
+    }
 }

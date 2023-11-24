@@ -64,13 +64,18 @@
     margin: 30px;
 }
 
+.update-delete-form {
+    display: flex;
+    gap: 20px;
+}
+
 .updateform {
     width: 100%;
     display: flex;
     justify-content: end;
 }
 
-#update-button {
+#update-button,#delete-button {
     margin-top: 20px;
     font-size: 16px;
     background-color: #fff;
@@ -79,6 +84,8 @@
     border-radius: 20px;
     margin-bottom: 20px;
 }
+
+
 
 .posting-comment {
     display: flex;

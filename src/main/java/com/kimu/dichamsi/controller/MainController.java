@@ -17,17 +17,6 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class MainController {
 
-    @GetMapping("/mainPage")
-    public String mainPage () {
-        return "mainPage";
-    }
-
-    @GetMapping("/search")
-    public String mainSearch(String request){
-        System.out.println(request);
-        return "redirect:/posting/search";
-    }
-
     // 로그인 성공 후에 메인 페이지로 리디렉션
     @RequestMapping(value = "/loginSuccess", method = RequestMethod.GET)
     public String loginSuccess(HttpSession session) {

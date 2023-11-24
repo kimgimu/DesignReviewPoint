@@ -10,6 +10,7 @@ import com.kimu.dichamsi.repository.PostRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,6 +35,11 @@ public class CommentService {
 
     public List<Comment> getCommentList(Long postingId) {
         return commentRepository.findByPostId(postingId);
+    }
+
+    public Optional<Comment> deleteComment(Long commentId){
+        commentRepository.deleteById(commentId);
+        return commentRepository.findById(commentId);
     }
 
 //    public List<CommentDTO> showComment(Long postingID){

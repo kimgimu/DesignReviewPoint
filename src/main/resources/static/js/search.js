@@ -24,7 +24,7 @@ class ImageGrid {
                             self.observe(cards[cardCount]);
                         } else {
                             ++this.page;
-                            this.requestImages(this.imagesPerPage, this.page);
+                            this.requestImages(keyword,this.imagesPerPage, this.page);
                         }
                     }
                 });
@@ -36,7 +36,7 @@ class ImageGrid {
             }
         );
         this.createStatus();
-        this.requestImages(this.imagesPerPage, this.page);
+        this.requestImages(keyword,this.imagesPerPage, this.page);
     }
 
     createStatus() {
@@ -62,10 +62,10 @@ class ImageGrid {
         }
     }
 
-    requestImages(perPage, page) {
+    requestImages(keyword,perPage, page) {
         var minWidth = 270;
         var minHeight = 180;
-        var url = `/posting/search?page=${page}&size=${perPage}`;
+        var url = `/posting/search?keyword=${keyword}page=${page}&size=${perPage}`;
 
         $.ajax({
             url: url,

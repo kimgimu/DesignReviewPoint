@@ -2,6 +2,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const likeButton = document.querySelector(".heart-button");
     const postId = document.querySelector("#post-id").value;
+    const postDeleteButton = document.querySelector("#delete-button");
+
+    //게시글삭제 ajax
+    postDeleteButton.addEventListener("click",()=>{
+        $.ajax({
+            url: "/posting/view/delete/" + postId,
+            method: "post",
+            success: function (data) {
+                var result = JSON.parse(data);
+                alert("게시글 삭제 성공");
+                // 페이지 리다이렉트
+                window.location.href = result.redirect;
+            },
+            error: function () {
+                alert("게시글 삭제 실패");
+            }
+        });
+    });
 
     //댓글불러오기 ajax
     $.ajax({
@@ -44,6 +62,7 @@ document.addEventListener("DOMContentLoaded", () => {
     commentButton.addEventListener("click", () => {
         const commentArea = document.querySelector('#comment-area');
         const currentDate = new Date().toISOString();
+
         $.ajax({
             url: "/posting/comment/write/" + postId,
             method: "post",
@@ -61,6 +80,25 @@ document.addEventListener("DOMContentLoaded", () => {
                 console.log(error);
             }
         });
+    });
+
+    commentDiv.addEventListener("click", (event) => {
+        const target = event.target;
+        if (target.classList.contains("comment-del")) {
+            const commentId = target.parentElement.querySelector('.comment-del-comment-id').value;
+            $.ajax({
+                url: "/posting/comment/view/delete/" + commentId,
+                method: "post",
+                success: function (responseData) {
+                    alert(responseData);
+                    target.parentElement.parentElement.parentElement.remove();
+                },
+                error: function (error) {
+                    console.log("에러 발생:", error);
+                    alert(error.body);
+                }
+            });
+        }
     });
 
 });
@@ -97,6 +135,12 @@ function createCommentElement(commentObj) {
     commentDel.innerText = "x";
     commentDel.classList.add("comment-del");
 
+    //삭제를 위한 히든값 (댓글 아이디)
+    const hiddenInput = document.createElement("input");
+    hiddenInput.type = "hidden";
+    hiddenInput.value = commentObj.id; // 원하는 값을 설정
+    hiddenInput.classList.add("comment-del-comment-id");
+
     commentInfo.appendChild(namePara);
     commentInfo.appendChild(datePara);
     commentInfo.appendChild(contentPara);
@@ -104,6 +148,7 @@ function createCommentElement(commentObj) {
     //로그인한 회원과 댓글 작성자의 닉네임이 같으면 삭제버튼 생성
     if(nickname === commentObj.member.nickname) {
         commentInfo.appendChild(commentDel);
+        commentInfo.appendChild(hiddenInput);
     }
 
     commentForm.appendChild(img);

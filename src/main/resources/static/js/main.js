@@ -204,7 +204,7 @@ document.addEventListener("DOMContentLoaded",() => {
         let searchInput = document.querySelector("#search-input").value;
         console.log(searchInput);
         $.ajax({
-            url : "/search/"+searchInput,
+            url : "/posting/search/"+searchInput,
             method : "get",
             success : function (responseData) {
             },

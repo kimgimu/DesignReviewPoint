@@ -1,5 +1,6 @@
 package com.kimu.dichamsi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -24,8 +25,9 @@ public class Comment {
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
-    @ManyToOne
-    @JoinColumn(name = "POSTING_ID")
+    @JsonIgnore
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "POST_ID")
     private Post post;
 
     private LocalDate date;

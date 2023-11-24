@@ -8,6 +8,7 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -29,10 +30,14 @@ public class Post {
 
     private String content;
 
+    @Enumerated(EnumType.STRING)
     private Tag type;
 
     @ColumnDefault("0")
     @Column
     private Long liked;
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    private List<Comment> comments;
 
 }

@@ -5,9 +5,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" th:href="@{/css/view.css}"/>
-    <script th:src="@{https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js}"></script>
-    <script th:src="@{/js/view.js}" type="text/javascript"></script>
 </head>
 <body>
 
@@ -47,10 +44,18 @@
                 <span>좋아요 <span id="like-count" th:text="${post.get().liked}"></span></span>
             </div>
 
-            <div class="updateform">
-                <button id="update-button" th:onclick="|window.location.href='/posting/update/' + ${post.get().id} |">
-                    수정하기
-                </button>
+            <div class="update-delete-form">
+                <div class="updateform">
+                    <button id="update-button" th:onclick="|window.location.href='/posting/update/' + ${post.get().id} |">
+                        수정하기
+                    </button>
+                </div>
+
+                <div class="updateform">
+                    <button id="delete-button">
+                        삭제하기
+                    </button>
+                </div>
             </div>
 
         </div>
