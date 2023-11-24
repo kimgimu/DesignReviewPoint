@@ -5,12 +5,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@DynamicInsert
 @Data
 @Builder
 public class Post {
@@ -30,6 +32,7 @@ public class Post {
     private Tag type;
 
     @ColumnDefault("0")
+    @Column
     private Long liked;
 
 }

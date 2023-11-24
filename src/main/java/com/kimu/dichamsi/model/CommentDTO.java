@@ -6,23 +6,24 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @AllArgsConstructor
 @Data
 @Builder
 public class CommentDTO {
 
-    private Long commentId;
+    private String nickname;
     private String content;
-    private String memberName;
-    private Long postingId;
+    private LocalDate date;
 
-    public Comment toEntity() {
+    public Comment toEntity(Member member,Post post) {
         return Comment.builder()
-                .id(commentId)
+                .member(member)
                 .content(content)
-                .member(Member.builder().nickname(memberName).build())
-                .posting(Posting.builder().id(postingId).build())
+                .date(date)
+                .member(member)
+                .post(post)
                 .build();
     }
 

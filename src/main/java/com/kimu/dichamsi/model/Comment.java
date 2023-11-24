@@ -3,6 +3,7 @@ package com.kimu.dichamsi.model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 @NoArgsConstructor
@@ -25,15 +26,8 @@ public class Comment {
 
     @ManyToOne
     @JoinColumn(name = "POSTING_ID")
-    private Posting posting;
+    private Post post;
 
-    public CommentDTO toDTO(){
-        return CommentDTO.builder()
-                .commentId(id)
-                .content(content)
-                .memberName(member.getNickname())
-                .postingId(posting.getId())
-                .build();
-    }
+    private LocalDate date;
 
 }

@@ -5,8 +5,6 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.kimu.dichamsi.model.*;
 import com.kimu.dichamsi.repository.MemberReository;
 import com.kimu.dichamsi.repository.PostRepository;
-import com.kimu.dichamsi.repository.PostingImagesRepository;
-import com.kimu.dichamsi.repository.PostingRepositoy;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -29,105 +27,13 @@ public class PostingService {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
-    private final PostingRepositoy postingRepositoy;
     private final MemberReository memberReository;
-    private final PostingImagesRepository postingImagesRepository;
     private final PostRepository postRepository;
 
-    public PostingService(AmazonS3 amazonS3, PostingRepositoy postingRepositoy, MemberReository memberReository, PostingImagesRepository postingImagesRepository, PostRepository postRepository) {
+    public PostingService(AmazonS3 amazonS3, MemberReository memberReository, PostRepository postRepository) {
         this.amazonS3 = amazonS3;
-        this.postingRepositoy = postingRepositoy;
         this.memberReository = memberReository;
-        this.postingImagesRepository = postingImagesRepository;
         this.postRepository = postRepository;
-    }
-
-    public void savePosting(PostingDTO postingDTO,
-                            MultipartFile[] images,
-                            String nickname) throws IOException {
-        log.info("log info={}",nickname);
-        Posting postingEntity = postingDTO.toEntity();
-        memberReository.findByNickname(nickname).ifPresent(postingEntity::setMember);
-        log.info("log info={}",postingDTO);
-        postingRepositoy.save(postingEntity);
-
-        if (!Objects.isNull(images)) {
-            for (MultipartFile image : images) {
-
-                String originalFilename = image.getOriginalFilename();
-                ObjectMetadata metadata = new ObjectMetadata();
-                metadata.setContentLength(image.getSize());
-                metadata.setContentType(image.getContentType());
-
-                amazonS3.putObject(bucket,originalFilename,image.getInputStream(),metadata);
-
-                PostingImages postingImages = PostingImages.builder()
-                        .images(amazonS3.getUrl(bucket, originalFilename).toString())
-                        .posting(postingEntity)
-                        .build();
-
-                postingImagesRepository.save(postingImages);
-            }
-        }
-    }
-
-    public List<PostingDTO> showAllPosting(){
-        List<Posting> postings = postingRepositoy.findAllWithImages();
-        List<PostingDTO> postingDTOS = new ArrayList<>();
-        for(Posting posting : postings){
-            postingDTOS.add(posting.toDTO());
-        }
-        return postingDTOS;
-    }
-
-    public PostingDTO showView(Long id){
-        Optional<Posting> optionalPosting = postingRepositoy.findById(id);
-        if(optionalPosting.isPresent()){
-            Posting posting = optionalPosting.get();
-            return posting.toDTO();
-        }else{
-            return null;
-        }
-    }
-
-    public void addNewPostingImages(PostingDTO postingDTO, MultipartFile[] newImages, String nickname) throws IOException {
-        Posting postingEntity = postingDTO.toEntity();
-
-        // 새 이미지 업로드 로직 추가
-        if (!Objects.isNull(newImages)) {
-            for (MultipartFile image : newImages) {
-                String originalFilename = image.getOriginalFilename();
-                ObjectMetadata metadata = new ObjectMetadata();
-                metadata.setContentLength(image.getSize());
-                metadata.setContentType(image.getContentType());
-
-                amazonS3.putObject(bucket, originalFilename, image.getInputStream(), metadata);
-
-                PostingImages postingImages = PostingImages.builder()
-                        .images(amazonS3.getUrl(bucket, originalFilename).toString())
-                        .posting(postingEntity)
-                        .build();
-
-                postingImagesRepository.save(postingImages);
-            }
-        }
-    }
-
-    public boolean imageDelete(Long imageId){
-        // 이미지를 찾아서 삭제
-        PostingImages image = postingImagesRepository.findById(imageId)
-                .orElse(null);
-
-        if (image != null) {
-            postingImagesRepository.delete(image);
-            return true; // 삭제 성공
-        } else {
-            return false; // 삭제 실패
-        }
-    }
-
-    public void postingDelete(Long id){
-        postingRepositoy.deleteById(id);
     }
 
     public String imageUpload(MultipartRequest request) throws IOException {
@@ -161,8 +67,34 @@ public class PostingService {
         return postRepository.findAllPostWithImageUrls(pageable);
     }
 
+    public List<Post> viewSearchPost(String keyword,int page, int size){
+        Pageable pageable = PageRequest.of(page-1,size);
+        return postRepository.findSearchAllPostWithImageUrls(keyword,pageable);
+    }
+
     public Optional<Post> viewPost(Long id){
         return postRepository.findById(id);
     }
 
+    public Post likeButton(Long postId){
+        Optional<Post> post = postRepository.findById(postId);
+        Long liked = post.get().getLiked();
+        log.info("현재 라이크숫자 = {}",liked);
+        post.get().setLiked(liked+1);
+        log.info("set한 라이크 숫자 = {}",liked);
+        return postRepository.save(post.get());
+    }
+
+    public Post UpdatePost(PostDTO postDTO, Long postId) {
+        log.info("서비스단 확인={}");
+        Optional<Member> member = memberReository.findByNickname(postDTO.getNickname());
+        log.info("서비스단 확인2={}",member.get().toString());
+        Post post = postDTO.toEntity(member.get());
+        log.info("서비스단 확인3={}",post);
+        post.setId(postId);
+        log.info("서비스단 확인4={}",post);
+        Post post1 = postRepository.save(post);
+        log.info("서비스단 확인5={}",post1);
+        return post1;
+    }
 }

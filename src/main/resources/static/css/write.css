@@ -1,0 +1,35 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.editor-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+#editor-form {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+#title {
+    height: 32px;
+}
+
+.ck-editor__editable {
+    height: 500px;
+    width: 900px;
+}
+
+#upload-button {
+    margin-top: 20px;
+    font-size: 16px;
+    background-color: #fff;
+    border: 1px solid #E5E5E5;
+    padding: 10px;
+    border-radius: 20px;
+}

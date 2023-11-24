@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>검색페이지</title>
+</head>
+<body>
+
+<!-- index.html 고유 CSS 추가 -->
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/search.css}"/>
+</th:block>
+<!-- index.html 고유 스크립트 추가 -->
+<th:block layout:fragment="script">
+    <script th:src="@{https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js}"
+            type="text/javascript"></script>
+    <script th:src="@{/js/main.js}" type="text/javascript"></script>
+</th:block>
+
+<!-- Content -->
+<div layout:fragment="content">
+    <div id="one" class="image-grid"></div>
+</div>
+</body>
+</html>

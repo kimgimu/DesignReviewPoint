@@ -1,8 +1,12 @@
 package com.kimu.dichamsi.controller;
 
+import com.kimu.dichamsi.model.CustomUserDetails;
+import com.kimu.dichamsi.model.Member;
 import com.kimu.dichamsi.model.MemberDTO;
 import com.kimu.dichamsi.service.MemberService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,7 +41,5 @@ public class MemberController {
         memberService.join(memberDTO);
         return "redirect:/user/login";
     }
-
-
 
 }

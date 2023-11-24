@@ -4,23 +4,15 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <script src="https://cdn.ckeditor.com/ckeditor5/40.0.0/classic/ckeditor.js"></script>
-    <link rel="stylesheet" th:href="@{/css/write.css}"/>
 </head>
 <body>
-<div class="editor-wrap">
-<form th:action="@{/posting/write}" method="post" id="editor-form">
-    <input type="text" name="title" placeholder="제목" id="title">
-    <textarea name="content" cols="30" rows="10" placeholder="내용" id="editor"></textarea>
-    <select name="type" required>
-        <option value=GRAPHIC">Graphic</option>
-        <option value="UIUX">UI/UX</option>
-        <option value="BRANDING">Branding</option>
-        <option value="MOTION">MotionDesign</option>
-        <option value="COMPOUND">Compound</option>
-    </select>
-    <input type="submit" value="업로드" id="upload-button">
+
+<form th:action="@{/posting/update/{postId}(postId = ${post.get().id})}" method="post">
+    <input type="text" name="title" placeholder="제목">
+    <textarea name="content" cols="30" rows="10" placeholder="내용" id="editor" th:utext="${post.get().content}"></textarea>
+    <input type="submit" value="업로드">
 </form>
-</div>
+
 <script>
     ClassicEditor
         .create( document.querySelector( '#editor' ) ,
