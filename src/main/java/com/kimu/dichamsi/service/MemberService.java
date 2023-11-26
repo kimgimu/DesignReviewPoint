@@ -42,6 +42,15 @@ public class MemberService implements UserDetailsService {
         return memberReository.save(memberDTO.toEntity(encoder)).toDTO();
     }
 
+    public boolean emailCheck(MemberDTO memberDto){
+        return memberReository.findByUserEmail(memberDto.getUserEmail()).isPresent();
+    }
+
+    public boolean nicknameCheck(MemberDTO memberDto){
+        return memberReository.findByNickname(memberDto.getNickname()).isPresent();
+    }
+
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 

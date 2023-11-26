@@ -1,16 +1,16 @@
 body {
     margin: 0;
     padding: 0;
+    overflow-x: hidden; /* 가로 스크롤 방지 */
+    background-color: #F8F9FA;
 }
 
 #carousel {
     position: relative;
     height: 400px;
-    margin-bottom: 150px;
-}
-
-#carousel img {
-    box-shadow: -3px 13px 28px -10px #555555
+    top: 50%;
+    /*transform: translateY(-50%);*/
+    overflow: hidden;
 }
 
 #carousel div {
@@ -21,7 +21,7 @@ body {
 
 #carousel div img {
     width: 400px;
-    transition: width 1s;
+    transition: width 1s, height 1s;
 }
 
 #carousel div.hideLeft {
@@ -32,6 +32,7 @@ body {
 
 #carousel div.hideLeft img {
     width: 200px;
+    height: 200px;
 }
 
 #carousel div.hideRight {
@@ -42,6 +43,7 @@ body {
 
 #carousel div.hideRight img {
     width: 200px;
+    height: 200px;
 }
 
 #carousel div.prev {
@@ -51,6 +53,7 @@ body {
 }
 
 #carousel div.prev img {
+    height: 300px;
     width: 300px;
 }
 
@@ -63,12 +66,17 @@ body {
 
 #carousel div.prevLeftSecond img {
     width: 200px;
+    height: 200px;
 }
 
 #carousel div.selected {
     z-index: 10;
     left: 50%;
     transform: translateY(0px) translateX(-50%);
+}
+
+#carousel div.selected img{
+    height: 400px;
 }
 
 #carousel div.next {
@@ -79,6 +87,7 @@ body {
 
 #carousel div.next img {
     width: 300px;
+    height: 300px;
 }
 
 #carousel div.nextRightSecond {
@@ -90,6 +99,7 @@ body {
 
 #carousel div.nextRightSecond img {
     width: 200px;
+    height: 200px;
 }
 
 .comment {
@@ -127,7 +137,6 @@ body {
     font-size: calc(16px + (20 - 16)*(100vw - 320px)/(2560 - 320));
 }
 body {
-    background: var(--bg);
     color: var(--fg);
     font: 1em/1.5 "Hind", sans-serif;
 }
@@ -142,7 +151,6 @@ a {
 }
 .image-grid__card {
     animation: flyIn var(--transDur) ease-in;
-    background: var(--cardBg);
     border-radius: 0.25em;
     box-shadow: 0 0 0.375em #0003;
     width: 100%;
@@ -185,7 +193,9 @@ a {
     height: auto;
 }
 .image-grid__card-title {
-    display: -webkit-box;
+    display: flex;
+    justify-content: center;
+    font-weight: bold;
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
     overflow: hidden;
@@ -259,14 +269,14 @@ a {
     75% { opacity: 1; transform: rotate(270deg) }
 }
 
-@media (prefers-color-scheme: dark) {
-    :root {
-        --bg: #171717;
-        --cardBg: #242424;
-        --fg: #f1f1f1;
-        --linkFg: #5785f6;
-    }
-}
+/*@media (prefers-color-scheme: dark) {*/
+/*    :root {*/
+/*        --bg: #171717;*/
+/*        --cardBg: #242424;*/
+/*        --fg: #f1f1f1;*/
+/*        --linkFg: #5785f6;*/
+/*    }*/
+/*}*/
 @media (min-width: 512px) {
     .image-grid {
         grid-template-columns: repeat(2,1fr);
@@ -293,7 +303,7 @@ a {
     }
 }
 
-form{
+.search-form{
     position: relative;
     top: 50%;
     left: 50%;
@@ -340,23 +350,23 @@ input{
     transition: all 1s;
 }
 
-form:hover,
-form:valid{
+.search-form:hover,
+.search-form:valid{
     width: 200px;
     cursor: pointer;
 }
 
-form:hover input,
-form:valid input{
+.search-form:hover input,
+.search-form:valid input{
     display: block;
 }
 
-form:hover .fa,
-form:valid .fa{
+.search-form:hover .fa,
+.search-form:valid .fa{
     background: #07051a;
     color: white;
 }
 
-form:valid a {
+.search-form:valid a {
     display: block;
 }

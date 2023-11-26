@@ -31,6 +31,7 @@ public class PostingController {
         this.commentService = commentService;
     }
 
+
 //    @GetMapping("/board")
 //    public String postingBoardPage(Model model) {
 //        List<PostingDTO> postings = postingService.showAllPosting();
@@ -199,7 +200,10 @@ public class PostingController {
     }
 
     @GetMapping("/main")
-    public String mainPage() {
+    public String mainPage(Model model) {
+        List<TopSeven> topSevenList = postingService.topSevenPost();
+        log.info("topSeven = {}",topSevenList);
+        model.addAttribute("topSevenList",topSevenList);
         return "main";
     }
 
@@ -227,18 +231,20 @@ public class PostingController {
         }
     }
 
-    @GetMapping("/search")
-    public String SearchPage() {
+    @GetMapping("/search/main")
+    public String search(@RequestParam(name = "keyword") String keyword,Model model){
+        model.addAttribute("keyword",keyword);
         return "search";
     }
 
-    @PostMapping("/search/{keyword}")
+    @PostMapping("/search")
     @ResponseBody
-    public ResponseEntity<List<Map<String, Object>>> searchPage(@PathVariable("keyword") String keyword,
+    public ResponseEntity<List<Map<String, Object>>> searchPage(@RequestParam("keyword") String keyword,
                                                                 @RequestParam(defaultValue = "1") int page,
                                                                 @RequestParam(defaultValue = "20") int size) {
 
         List<Post> postList = postingService.viewSearchPost(keyword, page, size);
+        log.info("postList 출력 = {}",postList);
 
         if (postList != null) {
             List<Map<String, Object>> responseData = new ArrayList<>();
@@ -250,12 +256,12 @@ public class PostingController {
                 postMap.put("pageURL", pageURL);
                 responseData.add(postMap);
             }
-
             return ResponseEntity.ok(responseData);
         } else {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+
 
     @PostMapping("/like/{postId}")
     @ResponseBody
@@ -286,7 +292,6 @@ public class PostingController {
     @ResponseBody
     public ResponseEntity<?> getCommentList(@PathVariable Long postingId) {
         List<Comment> commentList = commentService.getCommentList(postingId);
-        log.info("댓글리스트 = {}", commentList);
         if (commentList != null) {
             return ResponseEntity.ok(commentList);
         } else {

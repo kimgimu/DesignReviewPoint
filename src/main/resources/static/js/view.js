@@ -4,22 +4,25 @@ document.addEventListener("DOMContentLoaded", () => {
     const postId = document.querySelector("#post-id").value;
     const postDeleteButton = document.querySelector("#delete-button");
 
-    //게시글삭제 ajax
-    postDeleteButton.addEventListener("click",()=>{
-        $.ajax({
-            url: "/posting/view/delete/" + postId,
-            method: "post",
-            success: function (data) {
-                var result = JSON.parse(data);
-                alert("게시글 삭제 성공");
-                // 페이지 리다이렉트
-                window.location.href = result.redirect;
-            },
-            error: function () {
-                alert("게시글 삭제 실패");
-            }
+    if(postDeleteButton !== null) {
+        //게시글삭제 ajax
+        postDeleteButton.addEventListener("click",()=>{
+            $.ajax({
+                url: "/posting/view/delete/" + postId,
+                method: "post",
+                success: function (data) {
+                    var result = JSON.parse(data);
+                    alert("게시글 삭제 성공");
+                    // 페이지 리다이렉트
+                    window.location.href = result.redirect;
+                },
+                error: function () {
+                    alert("게시글 삭제 실패");
+                }
+            });
         });
-    });
+    }
+
 
     //댓글불러오기 ajax
     $.ajax({
@@ -117,7 +120,7 @@ function createCommentElement(commentObj) {
 
     const img = document.createElement("img");
     img.classList.add("member-img");
-    // img.src = commentObj.profileImg; // 프로필 이미지 URL
+    img.src = "https://mblogthumb-phinf.pstatic.net/MjAyMDExMDFfMyAg/MDAxNjA0MjI5NDA4NDMy.5zGHwAo_UtaQFX8Hd7zrDi1WiV5KrDsPHcRzu3e6b8Eg.IlkR3QN__c3o7Qe9z5_xYyCyr2vcx7L_W1arNFgwAJwg.JPEG.gambasg/%EC%9C%A0%ED%8A%9C%EB%B8%8C_%EA%B8%B0%EB%B3%B8%ED%94%84%EB%A1%9C%ED%95%84_%ED%8C%8C%EC%8A%A4%ED%85%94.jpg?type=w800"; // 프로필 이미지 URL
 
     const commentInfo = document.createElement("div");
     commentInfo.classList.add("comment-info");

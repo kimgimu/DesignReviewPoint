@@ -1,0 +1,28 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid #dedede;
+}
+
+.header ul {
+    list-style: none;
+}
+
+.header li {
+    display: inline-block;
+    margin: 15px;
+}
+
+.header li button {
+    font-size: 14px;
+    padding: 10px;
+    border: none;
+    background-color: transparent;
+}

@@ -1,3 +1,140 @@
+body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden; /* 가로 스크롤 방지 */
+    background-color: #F8F9FA;
+}
+
+#carousel {
+    position: relative;
+    height: 400px;
+    margin-bottom: 150px;
+}
+
+#carousel img {
+    box-shadow: -3px 13px 28px -10px #555555
+}
+
+#carousel div {
+    position: absolute;
+    transition: transform 1s, left 1s, opacity 1s, z-index 0s;
+    opacity: 1;
+}
+
+#carousel div img {
+    width: 400px;
+    transition: width 1s;
+}
+
+#carousel div.hideLeft {
+    left: 0%;
+    opacity: 0;
+    transform: translateY(50%) translateX(-50%);
+}
+
+#carousel div.hideLeft img {
+    width: 200px;
+}
+
+#carousel div.hideRight {
+    left: 100%;
+    opacity: 0;
+    transform: translateY(50%) translateX(-50%);
+}
+
+#carousel div.hideRight img {
+    width: 200px;
+}
+
+#carousel div.prev {
+    z-index: 5;
+    left: 30%;
+    transform: translateY(50px) translateX(-50%);
+}
+
+#carousel div.prev img {
+    width: 300px;
+}
+
+#carousel div.prevLeftSecond {
+    z-index: 4;
+    left: 15%;
+    transform: translateY(50%) translateX(-50%);
+    opacity: .7;
+}
+
+#carousel div.prevLeftSecond img {
+    width: 200px;
+}
+
+#carousel div.selected {
+    z-index: 10;
+    left: 50%;
+    transform: translateY(0px) translateX(-50%);
+}
+
+#carousel div.next {
+    z-index: 5;
+    left: 70%;
+    transform: translateY(50px) translateX(-50%);
+}
+
+#carousel div.next img {
+    width: 300px;
+}
+
+#carousel div.nextRightSecond {
+    z-index: 4;
+    left: 85%;
+    transform: translateY(50%) translateX(-50%);
+    opacity: .7;
+}
+
+#carousel div.nextRightSecond img {
+    width: 200px;
+}
+
+.comment {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin: 10px 30px;
+    text-align: center;
+}
+
+.comment-search {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 80px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+* {
+    border: 0;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --bg: #e5e5e5;
+    --cardBg: #f1f1f1;
+    --fg: #171717;
+    --linkFg: #2762f3;
+    --transDur: 0.25s;
+    font-size: calc(16px + (20 - 16)*(100vw - 320px)/(2560 - 320));
+}
+body {
+    color: var(--fg);
+    font: 1em/1.5 "Hind", sans-serif;
+}
+a {
+    color: var(--linkFg);
+}
 /* Grid */
 .image-grid {
     display: grid;
@@ -123,14 +260,14 @@
     75% { opacity: 1; transform: rotate(270deg) }
 }
 
-@media (prefers-color-scheme: dark) {
-    :root {
-        --bg: #171717;
-        --cardBg: #242424;
-        --fg: #f1f1f1;
-        --linkFg: #5785f6;
-    }
-}
+/*@media (prefers-color-scheme: dark) {*/
+/*    :root {*/
+/*        --bg: #171717;*/
+/*        --cardBg: #242424;*/
+/*        --fg: #f1f1f1;*/
+/*        --linkFg: #5785f6;*/
+/*    }*/
+/*}*/
 @media (min-width: 512px) {
     .image-grid {
         grid-template-columns: repeat(2,1fr);
@@ -155,4 +292,72 @@
     .image-grid {
         grid-template-columns: repeat(6,1fr);
     }
+}
+
+.search-form{
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    transition: all 1s;
+    width: 50px;
+    height: 50px;
+    background: white;
+    box-sizing: border-box;
+    border-radius: 25px;
+    border: 4px solid white;
+    padding: 5px;
+    margin-top: 50px;
+    margin-bottom: 20px;
+}
+
+input{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;;
+    height: 42.5px;
+    line-height: 30px;
+    outline: 0;
+    border: 0;
+    display: none;
+    font-size: 1em;
+    border-radius: 20px;
+    padding: 0 20px;
+}
+
+.fa{
+    box-sizing: border-box;
+    padding: 10px;
+    width: 42.5px;
+    height: 42.5px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    border-radius: 50%;
+    color: #07051a;
+    text-align: center;
+    font-size: 1.2em;
+    transition: all 1s;
+}
+
+.search-form:hover,
+.search-form:valid{
+    width: 200px;
+    cursor: pointer;
+}
+
+.search-form:hover input,
+.search-form:valid input{
+    display: block;
+}
+
+.search-form:hover .fa,
+.search-form:valid .fa{
+    background: #07051a;
+    color: white;
+}
+
+.search-form:valid a {
+    display: block;
 }

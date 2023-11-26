@@ -29,9 +29,18 @@ public interface PostRepository extends JpaRepository<Post,Long> {
             "type, " +
             "member_id " +
             "FROM post " +
-            "WHERE title LIKE %:keyword% OR content LIKE %:keyword% OR %:keyword%", nativeQuery = true)
+            "WHERE title LIKE %:keyword% OR content LIKE %:keyword% OR type LIKE %:keyword% OR:keyword", nativeQuery = true)
     List<Post> findSearchAllPostWithImageUrls(@Param("keyword") String keyword, Pageable pageable);
 
+    @Query(value = "SELECT post_id, " +
+            "SUBSTRING_INDEX(SUBSTRING_INDEX(content, 'src=\"', -1), '\"', 1) AS content, " +
+            "liked, " +
+            "title, " +
+            "type, " +
+            "member_id " +
+            "FROM post"
+            , nativeQuery = true)
+    List<Post> findTop7ByLikedOrderByIdDesc();
 
 
 

@@ -1,51 +1,50 @@
 function moveToSelected(element) {
+    var $carousel = $('#carousel');
+    var $selected;
 
-    if (element == "next") {
-        var selected = $(".selected").next();
-    } else if (element == "prev") {
-        var selected = $(".selected").prev();
+    if (element === "next") {
+        $selected = $carousel.find(".selected").next();
+    } else if (element === "prev") {
+        $selected = $carousel.find(".selected").prev();
     } else {
-        var selected = element;
+        $selected = $(element);
     }
 
-    var next = $(selected).next();
-    var prev = $(selected).prev();
-    var prevSecond = $(prev).prev();
-    var nextSecond = $(next).next();
+    var $next = $selected.next();
+    var $prev = $selected.prev();
+    var $prevSecond = $prev.prev();
+    var $nextSecond = $next.next();
 
-    $(selected).removeClass().addClass("selected");
+    $selected.removeClass().addClass("selected");
 
-    $(prev).removeClass().addClass("prev");
-    $(next).removeClass().addClass("next");
+    $prev.removeClass().addClass("prev");
+    $next.removeClass().addClass("next");
 
-    $(nextSecond).removeClass().addClass("nextRightSecond");
-    $(prevSecond).removeClass().addClass("prevLeftSecond");
+    $nextSecond.removeClass().addClass("nextRightSecond");
+    $prevSecond.removeClass().addClass("prevLeftSecond");
 
-    $(nextSecond).nextAll().removeClass().addClass('hideRight');
-    $(prevSecond).prevAll().removeClass().addClass('hideLeft');
-
+    $nextSecond.nextAll().removeClass().addClass('hideRight');
+    $prevSecond.prevAll().removeClass().addClass('hideLeft');
 }
 
+// 이벤트 처리
 $(document).ready(function () {
-
-    // Eventos teclado
     $(document).keydown(function (e) {
         switch (e.which) {
-            case 37: // left
+            case 37: // 왼쪽 키
                 moveToSelected('prev');
                 break;
-
-            case 39: // right
+            case 39: // 오른쪽 키
                 moveToSelected('next');
                 break;
-
-            default: return;
+            default:
+                return;
         }
         e.preventDefault();
     });
 
     $('#carousel div').click(function () {
-        moveToSelected($(this));
+        moveToSelected(this);
     });
 
     $('#prev').click(function () {
@@ -55,9 +54,8 @@ $(document).ready(function () {
     $('#next').click(function () {
         moveToSelected('next');
     });
+});
 
-
-})
 
 document.addEventListener("DOMContentLoaded",() => {
     let imgGrid = new ImageGrid({ id: "one" });
@@ -198,19 +196,11 @@ class ImageGrid {
 
 }
 
-document.addEventListener("DOMContentLoaded",() => {
+document.addEventListener("DOMContentLoaded", () => {
     const searchButton = document.querySelector("#search-button");
-    searchButton.addEventListener("click",() => {
+    searchButton.addEventListener("click", () => {
         let searchInput = document.querySelector("#search-input").value;
-        console.log(searchInput);
-        $.ajax({
-            url : "/posting/search/"+searchInput,
-            method : "get",
-            success : function (responseData) {
-            },
-            error : function (error) {
-                console.log(error);
-            }
-        })
+        window.location.href = "/posting/search/main?keyword=" + encodeURIComponent(searchInput);
     });
-})
+});
+

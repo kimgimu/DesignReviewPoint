@@ -2,6 +2,15 @@ document.addEventListener("DOMContentLoaded",() => {
     let imgGrid = new ImageGrid({ id: "one" });
 });
 
+document.addEventListener("DOMContentLoaded", () => {
+    const searchButton = document.querySelector("#search-button");
+    searchButton.addEventListener("click", () => {
+        let searchInput = document.querySelector("#search-input").value;
+        window.location.href = "/posting/search/main?keyword=" + encodeURIComponent(searchInput);
+    });
+});
+
+
 class ImageGrid {
     constructor(args) {
         this.container = $(`#${args.id}`);
@@ -24,7 +33,7 @@ class ImageGrid {
                             self.observe(cards[cardCount]);
                         } else {
                             ++this.page;
-                            this.requestImages(keyword,this.imagesPerPage, this.page);
+                            this.requestImages(this.imagesPerPage, this.page);
                         }
                     }
                 });
@@ -36,7 +45,7 @@ class ImageGrid {
             }
         );
         this.createStatus();
-        this.requestImages(keyword,this.imagesPerPage, this.page);
+        this.requestImages(this.imagesPerPage, this.page);
     }
 
     createStatus() {
@@ -62,11 +71,11 @@ class ImageGrid {
         }
     }
 
-    requestImages(keyword,perPage, page) {
+    requestImages(perPage, page) {
         var minWidth = 270;
         var minHeight = 180;
-        var url = `/posting/search?keyword=${keyword}page=${page}&size=${perPage}`;
-
+        const keyword = document.querySelector("#keyword").value;
+        var url = `/posting/search?keyword=${keyword}&page=${page}&size=${perPage}`;
         $.ajax({
             url: url,
             method: "POST",

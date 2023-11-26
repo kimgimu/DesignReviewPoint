@@ -1,6 +1,12 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <div th:fragment="headerFragment">
-    <p>헤더 부분 입니다</p>
-    <input type="hidden" th:value="${session.nickname}" id="session-nickname">
+    <div class="header">
+        <ul>
+            <li><button id="logout">로그아웃</button></li>
+            <li><button id="write">작품전시</button></li>
+            <li><button id="main">메인</button></li>
+        </ul>
+        <input type="hidden" th:value="${session.nickname}" id="session-nickname">
+    </div>
 </div>
 </html>
