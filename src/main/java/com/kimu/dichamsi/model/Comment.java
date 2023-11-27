@@ -26,7 +26,7 @@ public class Comment {
     private Member member;
 
     @JsonIgnore
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "POST_ID")
     private Post post;
 
