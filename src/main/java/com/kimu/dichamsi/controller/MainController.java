@@ -18,14 +18,14 @@ import javax.servlet.http.HttpSession;
 public class MainController {
 
     // 로그인 성공 후에 메인 페이지로 리디렉션
-    @RequestMapping(value = "/loginSuccess", method = RequestMethod.GET)
+    @RequestMapping(value = "/loginSuccess")
     public String loginSuccess(HttpSession session) {
         String nickname = principalInfo().getNickname();
         session.setAttribute("nickname",nickname);
         return "redirect:/posting/main";
     }
 
-    @RequestMapping(value = "/loginFail", method = RequestMethod.GET)
+    @RequestMapping(value = "/loginFail")
     public String loginFail(Model model) {
         model.addAttribute("failMessage","아이디 또는 비밀번호를 잘못 입력했습니다.");
         return "loginPage";

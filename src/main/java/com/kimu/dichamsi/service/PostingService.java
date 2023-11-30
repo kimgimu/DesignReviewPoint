@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartRequest;
 
@@ -85,16 +86,13 @@ public class PostingService {
         return postRepository.save(post.get());
     }
 
-    public Post UpdatePost(PostDTO postDTO, Long postId) {
-        log.info("서비스단 확인={}");
+    public Post UpdatePost(PostDTO postDTO, Long postId, List<Comment> commentList) {
         Optional<Member> member = memberReository.findByNickname(postDTO.getNickname());
-        log.info("서비스단 확인2={}", member.get().toString());
-        Post post = postDTO.toEntity(member.get());
-        log.info("서비스단 확인3={}", post);
+        Long liked = postRepository.findById(postId).get().getLiked();
+        Post post = postDTO.toEntity(member.get(),commentList);
         post.setId(postId);
-        log.info("서비스단 확인4={}", post);
+        post.setLiked(liked);
         Post post1 = postRepository.save(post);
-        log.info("서비스단 확인5={}", post1);
         return post1;
     }
 

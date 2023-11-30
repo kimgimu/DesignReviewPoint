@@ -19,6 +19,10 @@
     padding: 0 50px 50px;
 }
 
+.posting-content img {
+    width: 100%;
+}
+
 .posting-title {
     margin-top: 50px;
     font-size: 42px;

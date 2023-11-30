@@ -4,15 +4,24 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <script src="https://cdn.ckeditor.com/ckeditor5/40.0.0/classic/ckeditor.js"></script>
+    <link rel="stylesheet" th:href="@{/css/write.css}"/>
 </head>
 <body>
+<div class="editor-wrap">
+    <form th:action="@{/posting/update/{postId}(postId = ${post.get().id})}" method="post" id="editor-form">
+        <input type="text" name="title" placeholder="제목" id="title" th:value="${post.get().title}">
+        <textarea name="content" cols="30" rows="10" placeholder="내용" id="editor" th:utext="${post.get().content}"></textarea>
+        <select name="type" th:value="${post.get().type}" required>
+            <option value="GRAPHIC" th:selected="${post.get().type == 'GRAPHIC'}">Graphic</option>
+            <option value="UIUX" th:selected="${post.get().type == 'UIUX'}">UI/UX</option>
+            <option value="BRANDING" th:selected="${post.get().type == 'BRANDING'}">Branding</option>
+            <option value="MOTION" th:selected="${post.get().type == 'MOTION'}">MotionDesign</option>
+            <option value="COMPOUND" th:selected="${post.get().type == 'COMPOUND'}">Compound</option>
+        </select>
 
-<form th:action="@{/posting/update/{postId}(postId = ${post.get().id})}" method="post">
-    <input type="text" name="title" placeholder="제목">
-    <textarea name="content" cols="30" rows="10" placeholder="내용" id="editor" th:utext="${post.get().content}"></textarea>
-    <input type="submit" value="업로드">
-</form>
-
+        <input type="submit" value="업로드" id="upload-button">
+    </form>
+</div>
 <script>
     ClassicEditor
         .create( document.querySelector( '#editor' ) ,

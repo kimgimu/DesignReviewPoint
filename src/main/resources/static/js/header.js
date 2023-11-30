@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded",()=>{
     const logout = document.querySelector("#logout");
     const write = document.querySelector("#write");
-    const main = document.querySelector("#main");
+    const main = document.querySelector(".main-button");
 
     logout.addEventListener("click",()=>{
         $.ajax({

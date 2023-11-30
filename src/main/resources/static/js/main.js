@@ -168,8 +168,6 @@ class ImageGrid {
                 title: content.tags || "untitled",
                 link: content.pageURL || "#0",
                 thumbnail: (content.webformatURL ? content.webformatURL.replace("640.jpg", "180.jpg") : "https://i.ibb.co/6Whjrmx/placeholder.png"),
-                thumbWidth: (content.webformatWidth ? content.webformatWidth / 2 : 1),
-                thumbHeight: (content.webformatHeight ? content.webformatHeight / 2 : 1)
             };
             console.log(JSON.stringify(data) + "콘텐츠를 데이터로 변환");
 

@@ -130,7 +130,6 @@ body {
 }
 body {
     color: var(--fg);
-    font: 1em/1.5 "Hind", sans-serif;
 }
 a {
     color: var(--linkFg);
